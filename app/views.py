@@ -1,9 +1,12 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 from app.models import Customer
 from app.my_forms import CustomerForm, LoginForm
+from app.my_serializers import CustomerSerializer
 
 
 # Create your views here.
@@ -65,3 +68,24 @@ def signin(request):
     else:
         form = LoginForm()
     return render(request,'signin.html',{'form':form})
+
+@api_view(['GET'])
+def api_customers(request):
+    data = Customer.objects.all()
+    serializer = CustomerSerializer(data, many=True)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def api_save(request):
+    person =request.data
+    serializer = CustomerSerializer(data=person)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({"message":"success"})
+    return Response(serializer.errors)
+
+@api_view(['DELETE'])
+def api_delete(request,id):
+    customer = Customer.objects.get(id=id)
+    customer.delete()
+    return Response({"message":"delete"})
