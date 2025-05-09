@@ -22,6 +22,9 @@ from Djangoproject import settings
 from app import views
 
 urlpatterns = [
+    path('api/customers',views.api_customers,name='api_customers'),
+    path('api/save',views.api_save,name='api_save'),
+    path('api/delete/<int:id>',views.api_delete,name='api_delete'),
     path('signin',views.signin,name='signin-page'),
     path('',views.home,name='home-page'),
     path('add',views.add,name='add-page'),

@@ -19,3 +19,5 @@ class Customer(models.Model):
 #python manage.py makemigrations
 #python manage.py migrate
 #pip install pillow
+#pip install django_rest_framework
+#localhost:8000/api/customers
